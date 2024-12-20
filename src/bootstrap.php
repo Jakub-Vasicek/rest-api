@@ -2,32 +2,26 @@
 declare(strict_types=1);
 
 use DI\ContainerBuilder;
+use Symfony\Component\Dotenv\Dotenv;
 
 date_default_timezone_set('Europe/Prague');
 
 require __DIR__ . '/../vendor/autoload.php';
+$envFile = __DIR__ . '/../.env';
+
+if (!file_exists($envFile)) {
+    throw new \RuntimeException('Environment file not found. Please create .env file in the root directory.');
+}
+
+$dotenv = new Dotenv();
+$dotenv->load($envFile);
 
 // Instantiate PHP-DI ContainerBuilder
-$containerBuilder = new \DI\ContainerBuilder();
-$containerBuilder->addDefinitions([
-    'doctrine.entity_manager' => function() {
-        $config = \Doctrine\ORM\Tools\Setup::createAnnotationMetadataConfiguration(
-            [__DIR__ . '/src'],
-            true,
-            null,
-            null,
-            false
-        );
-        $conn = [
-            'driver' => 'pdo_mysql',
-            'user' => 'app_user',
-            'password' => 'app_password',
-            'dbname' => 'app_db',
-        ];
-        return \Doctrine\ORM\EntityManager::create($conn, $config);
-    },
-]);
-$container = $containerBuilder->build();
+$containerBuilder = new ContainerBuilder();
+
+// Set up dependencies
+$dependencies = require __DIR__ . '/../app/dependencies.php';
+$dependencies($containerBuilder);
 
 // Build PHP-DI Container instance
 return $containerBuilder->build();
