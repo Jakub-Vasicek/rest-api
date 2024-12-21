@@ -1,0 +1,78 @@
+openapi: 3.0.0
+info:
+  title: 'REST API'
+  description: 'A simple REST API for demonstration purposes.'
+  version: '1.0'
+servers:
+  -
+    url: 'http://localhost:8000'
+    description: 'Localhost server'
+paths:
+  /task:
+    get:
+      summary: 'List all tasks'
+      operationId: ec90a66ef793029833b006367efddf14
+      responses:
+        '200':
+          description: 'List of tasks'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+    post:
+      summary: 'Create a new task'
+      operationId: f5c712912fd830e3bd75a0bf0b4c7a62
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Task'
+      responses:
+        '201':
+          description: 'Task created'
+        '400':
+          description: 'Invalid input'
+  '/task/{id}':
+    put:
+      summary: 'Update a task'
+      operationId: eafe77960501a1551abe9b4ee0605c0c
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'ID of the task to update'
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Task'
+      responses:
+        '200':
+          description: 'Task updated'
+components:
+  schemas:
+    Task:
+      required:
+        - title
+        - status
+      properties:
+        title:
+          type: string
+        status:
+          type: string
+        description:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      type: object

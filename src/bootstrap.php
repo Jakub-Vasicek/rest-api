@@ -2,6 +2,8 @@
 declare(strict_types=1);
 
 use DI\ContainerBuilder;
+use Doctrine\DBAL\Types\Type;
+use Ramsey\Uuid\Doctrine\UuidType;
 use Symfony\Component\Dotenv\Dotenv;
 
 date_default_timezone_set('Europe/Prague');
@@ -22,6 +24,8 @@ $containerBuilder = new ContainerBuilder();
 // Set up dependencies
 $dependencies = require __DIR__ . '/../app/dependencies.php';
 $dependencies($containerBuilder);
+
+Type::addType('uuid', UuidType::class);
 
 // Build PHP-DI Container instance
 return $containerBuilder->build();

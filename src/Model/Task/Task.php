@@ -10,10 +10,23 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
+use OpenApi\Annotations as OA;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
+/**
+ * @OA\Schema(
+ *     schema="Task",
+ *     type="object",
+ *     required={"title", "status"},
+ *     @OA\Property(property="title", type="string"),
+ *     @OA\Property(property="status", type="string"),
+ *     @OA\Property(property="description", type="string", nullable=true),
+ *     @OA\Property(property="created_at", type="datetime"),
+ *     @OA\Property(property="updated_at", type="datetime")
+ * )
+ */
 #[Entity, Table(name: 'tasks')]
 class Task implements \JsonSerializable
 {
@@ -29,8 +42,8 @@ class Task implements \JsonSerializable
     #[Column(name: 'description', type: 'text', nullable: true)]
     private ?string $description;
 
-    #[Column(name: 'status', type: 'string', length: 255, nullable: false)]
-    private string $status;
+    #[Column(name: 'status', type: 'string', length: 255, nullable: false, enumType: TaskStatus::class)]
+    private TaskStatus $status;
 
     #[Column(name: 'created_at', type: 'datetime', nullable: false)]
     private DateTime $createdAt;
@@ -38,14 +51,31 @@ class Task implements \JsonSerializable
     #[Column(name: 'updated_at', type: 'datetime', nullable: false)]
     private DateTime $updatedAt;
 
-    public function __construct(string $title, string $status, ?string $description)
+    public function __construct(TaskData $taskData)
     {
-        $this->title = $title;
-        $this->description = $description;
-        $this->status = $status;
         $this->id = Uuid::uuid4();
+        $this->title = $taskData->title;
+        $this->description = $taskData->description;
+        $this->status = $taskData->status;
         $this->createdAt = new DateTime();
         $this->updatedAt = new DateTime();
+    }
+
+    public function updateTask(TaskData $taskData): void
+    {
+        $this->title = $taskData->title;
+        $this->description = $taskData->description;
+        $this->status = $taskData->status;
+        $this->updatedAt = new DateTime();
+    }
+
+    public function getData(): TaskData
+    {
+        return TaskData::fromArray([
+            'title' => $this->title,
+            'description' => $this->description,
+            'status' => $this->status->value
+        ]);
     }
 
     /**
@@ -61,12 +91,12 @@ class Task implements \JsonSerializable
     {
 
         return [
-            'id' => $this->id,
+            'id' => $this->id->toString(),
             'title' => $this->title,
             'description' => $this->description,
-            'status' => $this->status,
-            'created_at' => $this->createdAt,
-            'updated_at' => $this->updatedAt,
+            'status' => $this->status->value,
+            'created_at' => $this->createdAt->format('Y-m-d H:i:s'),
+            'updated_at' => $this->updatedAt->format('Y-m-d H:i:s'),
         ];
     }
 }

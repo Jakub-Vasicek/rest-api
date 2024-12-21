@@ -1,13 +1,12 @@
 <?php
 declare(strict_types=1);
 
-use DI\Container;
 use Slim\Factory\AppFactory;
-
-require __DIR__ . '/../vendor/autoload.php';
+use Slim\Factory\ServerRequestCreatorFactory;
+use Slim\ResponseEmitter;
 
 // Create Container using PHP-DI
-$container = new Container();
+$container = require __DIR__ . '/../src/bootstrap.php';
 
 // Set container to create App with on AppFactory
 AppFactory::setContainer($container);
@@ -18,4 +17,17 @@ $callableResolver = $app->getCallableResolver();
 $routes = require __DIR__ . '/../app/routes.php';
 $routes($app);
 
-$app->run();
+// Create Request object from globals
+$serverRequestCreator = ServerRequestCreatorFactory::create();
+$request = $serverRequestCreator->createServerRequestFromGlobals();
+
+// Add Routing Middleware
+$app->addRoutingMiddleware();
+
+// Add Body Parsing Middleware
+$app->addBodyParsingMiddleware();
+
+// Run App & Emit Response
+$response = $app->handle($request);
+$responseEmitter = new ResponseEmitter();
+$responseEmitter->emit($response);

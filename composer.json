@@ -16,7 +16,10 @@
         "php-di/slim-bridge": "^3.4",
         "symfony/cache": "^7.2",
         "ramsey/uuid-doctrine": "^2.1",
-        "symfony/dotenv": "^7.2"
+        "symfony/dotenv": "^7.2",
+        "zircote/swagger-php": "^4.11",
+        "doctrine/annotations": "^2.0",
+        "swagger-api/swagger-ui": "^5.18"
     },
     "require-dev": {
         "phpunit/phpunit": "^11.2",
@@ -30,6 +33,7 @@
     },
     "scripts": {
         "app-phpstan-max": "phpstan analyse -l max -c phpstan.neon",
-        "app-test-phpunit-unit": "phpunit -c phpunit.xml --testsuit \"unit\""
+        "app-test-phpunit-unit": "phpunit -c phpunit.xml --testsuit \"unit\"",
+        "app-generate-swagger": "./vendor/bin/openapi -o swagger.yaml src"
     }
 }
