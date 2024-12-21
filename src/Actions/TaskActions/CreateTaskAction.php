@@ -80,12 +80,7 @@ class CreateTaskAction extends BaseAction
             $status = TaskStatus::from($data['status']);
         } catch (\ValueError) {
             $response = $this->response->withStatus(400);
-            $response->getBody()->write(
-                json_encode(
-                    ['error' => 'Invalid status: ' . $data['status']],
-                    JSON_THROW_ON_ERROR
-                )
-            );
+            $response->getBody()->write('Invalid status: ' . $data['status']);
             return $response;
         }
 

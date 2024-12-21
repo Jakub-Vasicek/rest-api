@@ -34,10 +34,10 @@ class ListTaskAction extends BaseAction
      */
     protected function action(): Response
     {
-        $tasks = array_map(static fn($task) => $task->jsonSerialize(), $this->taskRepository->listTasks());
+        $tasksSerialized = array_map(static fn($task) => $task->jsonSerialize(), $this->taskRepository->listTasks());
 
         $response = $this->response->withStatus(200);
-        $response->getBody()->write(json_encode($tasks, JSON_THROW_ON_ERROR));
+        $response->getBody()->write(json_encode($tasksSerialized, JSON_THROW_ON_ERROR));
         return $response;
     }
 }

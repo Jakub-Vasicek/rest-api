@@ -49,7 +49,7 @@ abstract class BaseAction
     protected function resolveArg(string $name): string
     {
         if (!isset($this->args[$name])) {
-            throw new \Slim\Exception\HttpBadRequestException($this->request, "Could not resolve argument `{$name}`.");
+            throw new HttpBadRequestException($this->request, "Could not resolve argument `{$name}`.");
         }
 
         return $this->args[$name];

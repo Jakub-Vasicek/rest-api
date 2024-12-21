@@ -39,4 +39,14 @@ readonly class TaskRepository
             'id' => $uuid,
         ]);
     }
+
+    /**
+     * @return array<Task>
+     */
+    public function listTasksByStatus(TaskStatus $status): array
+    {
+        return $this->em->getRepository(Task::class)->findBy([
+            'status' => $status,
+        ]);
+    }
 }

@@ -7,7 +7,6 @@ namespace JakVas\Application\Actions\TaskActions;
 use JakVas\Application\Actions\BaseAction;
 use JakVas\Application\Model\Task\TaskData;
 use JakVas\Application\Model\Task\TaskRepository;
-use JakVas\Application\Model\Task\TaskStatus;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface as Response;
 
@@ -59,17 +58,7 @@ class UpdateTaskAction extends BaseAction
         }
 
         $requestData = json_decode($this->request->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
-        $taskDataNew = $task->getData();
-
-        if (isset($requestData['status'])) {
-            $taskDataNew->status = TaskStatus::from($requestData['status']);
-        }
-        if (isset($requestData['title'])) {
-            $taskDataNew->title = $requestData['title'];
-        }
-        if (isset($requestData['description'])) {
-            $taskDataNew->description = $requestData['description'];
-        }
+        $taskDataNew = TaskData::updateFromIncompleteSet($task->getData(), $requestData);
 
         $task->updateTask($taskDataNew);
         $this->taskRepository->updateTask($task);

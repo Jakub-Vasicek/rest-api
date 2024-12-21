@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 use JakVas\Application\Actions\TaskActions\CreateTaskAction;
 use JakVas\Application\Actions\TaskActions\ListTaskAction;
+use JakVas\Application\Actions\TaskActions\ListTaskByStatusAction;
 use JakVas\Application\Actions\TaskActions\UpdateTaskAction;
 use Slim\App;
 use Slim\Psr7\Request;
@@ -26,7 +27,10 @@ return static function (App $app) {
 
     $app->group('/task', function (Group $group) use ($uuid) {
         $group->post('[/]', CreateTaskAction::class);
-        $group->get('[/]', ListTaskAction::class);
+        $group->group('', function (Group $group) {
+            $group->get('[/]', ListTaskAction::class);
+            $group->get("/by-status/{status}", ListTaskByStatusAction::class);
+        });
         $group->put("/{id:{$uuid}}", UpdateTaskAction::class);
     });
 };

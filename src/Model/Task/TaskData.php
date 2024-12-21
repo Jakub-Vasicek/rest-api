@@ -19,4 +19,22 @@ class TaskData
 
         return $taskData;
     }
+
+    /**
+     * @param TaskData $taskData
+     * @param array $data{
+     *      title?: string,
+     *      description?: string,
+     *      status?: string
+     * }
+     * @return self
+     */
+    public static function updateFromIncompleteSet(TaskData $taskData, array $data): self
+    {
+        $taskData->title = $data['title'] ?? $taskData->title;
+        $taskData->description = $data['description'] ?? $taskData->description;
+        $taskData->status = TaskStatus::from($data['status']) ?? $taskData->status;
+
+        return $taskData;
+    }
 }

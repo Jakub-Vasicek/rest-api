@@ -33,6 +33,31 @@ paths:
           description: 'Task created'
         '400':
           description: 'Invalid input'
+  '/task/by-status/{status}':
+    get:
+      summary: 'List all tasks'
+      operationId: 4cf67c0ceb373440ab1b1bf9903569df
+      parameters:
+        -
+          name: status
+          in: path
+          description: 'Status of the task'
+          required: true
+          schema:
+            type: string
+            enum:
+              - todo
+              - done
+              - in_progress
+      responses:
+        '200':
+          description: 'List of tasks filtered by status'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '400':
+          description: 'Invalid input'
   '/task/{id}':
     put:
       summary: 'Update a task'
