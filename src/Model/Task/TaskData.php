@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace JakVas\Application\Model\Task;
 
+use JakVas\Application\Model\Task\Exception\InvalidArgumentException;
+
 class TaskData
 {
 
@@ -10,30 +12,22 @@ class TaskData
     public ?string $description;
     public TaskStatus $status;
 
+    /**
+     * @param array $data {
+     *      title: string,
+     *      description?: string,
+     *      status: string
+     * }
+     * @throws InvalidArgumentException
+     */
     public static function fromArray(array $data): self
     {
         $taskData = new self();
-        $taskData->title = $data['title'] ?? throw new \InvalidArgumentException('Title is required');
+        $taskData->title = $data['title'] ?? throw InvalidArgumentException::missingTitleException();
         $taskData->description = $data['description'] ?? null;
-        $taskData->status = TaskStatus::from($data['status']) ?? throw new \InvalidArgumentException('Status is required');
-
-        return $taskData;
-    }
-
-    /**
-     * @param TaskData $taskData
-     * @param array $data{
-     *      title?: string,
-     *      description?: string,
-     *      status?: string
-     * }
-     * @return self
-     */
-    public static function updateFromIncompleteSet(TaskData $taskData, array $data): self
-    {
-        $taskData->title = $data['title'] ?? $taskData->title;
-        $taskData->description = $data['description'] ?? $taskData->description;
-        $taskData->status = TaskStatus::from($data['status']) ?? $taskData->status;
+        $taskData->status =
+            TaskStatus::from($data['status'])
+            ?? throw InvalidArgumentException::missingStatusException();
 
         return $taskData;
     }

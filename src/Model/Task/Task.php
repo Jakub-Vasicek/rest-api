@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
+use JakVas\Application\Model\Task\Exception\InvalidArgumentException;
 use OpenApi\Annotations as OA;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 use Ramsey\Uuid\Uuid;
@@ -69,6 +70,28 @@ class Task implements \JsonSerializable
         $this->updatedAt = new DateTime();
     }
 
+    /**
+     * @param array $data{
+     *      title?: string,
+     *      description?: string,
+     *      status?: string
+     * }
+     */
+    public function updateFromIncompleteSet(array $data): self
+    {
+        $this->title = $data['title'] ?? $this->title;
+        $this->description = $data['description'] ?? $this->description;
+        if (array_key_exists('status', $data)) {
+            $this->status = TaskStatus::from($data['status']);
+        }
+        $this->updatedAt = new DateTime();
+
+        return $this;
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     */
     public function getData(): TaskData
     {
         return TaskData::fromArray([
@@ -76,6 +99,21 @@ class Task implements \JsonSerializable
             'description' => $this->description,
             'status' => $this->status->value
         ]);
+    }
+
+    public function getUpdatedAt(): DateTime
+    {
+        return $this->updatedAt;
+    }
+
+    public function getCreatedAt(): DateTime
+    {
+        return $this->createdAt;
+    }
+
+    public function getId(): UuidInterface
+    {
+        return $this->id;
     }
 
     /**
