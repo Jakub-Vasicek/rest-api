@@ -8,10 +8,10 @@ servers:
     url: 'http://localhost:8000'
     description: 'Localhost server'
 paths:
-  /task:
+  /api/v1/task:
     get:
       summary: 'List all tasks'
-      operationId: ec90a66ef793029833b006367efddf14
+      operationId: 2d5d6138b9740f742294c76ae513531b
       responses:
         '200':
           description: 'List of tasks'
@@ -21,7 +21,7 @@ paths:
                 $ref: '#/components/schemas/Task'
     post:
       summary: 'Create a new task'
-      operationId: f5c712912fd830e3bd75a0bf0b4c7a62
+      operationId: eb23ce239ca8bd00c85b6d91f22f485a
       requestBody:
         required: true
         content:
@@ -33,10 +33,10 @@ paths:
           description: 'Task created'
         '400':
           description: 'Invalid input'
-  '/task/by-status/{status}':
+  '/api/v1/task/by-status/{status}':
     get:
       summary: 'List all tasks'
-      operationId: 4cf67c0ceb373440ab1b1bf9903569df
+      operationId: 4a2cee6fe2ddefbd10bdc7f540f46b60
       parameters:
         -
           name: status
@@ -58,10 +58,10 @@ paths:
                 $ref: '#/components/schemas/Task'
         '400':
           description: 'Invalid input'
-  '/task/{id}':
+  '/api/v1/task/{id}':
     put:
       summary: 'Update a task'
-      operationId: eafe77960501a1551abe9b4ee0605c0c
+      operationId: 5a3e9e725683015a3625b05f7156652a
       parameters:
         -
           name: id
@@ -94,10 +94,4 @@ components:
         description:
           type: string
           nullable: true
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
       type: object

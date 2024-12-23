@@ -10,7 +10,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 
 /**
  * @OA\Get(
- *     path="/task",
+ *     path="/api/v1/task",
  *     summary="List all tasks",
  *     @OA\Response(
  *          response="200",
@@ -19,7 +19,7 @@ use Psr\Http\Message\ResponseInterface as Response;
  *     )
  * )
  * @OA\PathItem(
- *     path="/task"
+ *     path="/api/v1/task"
  * )
  */
 class ListTaskAction extends BaseAction

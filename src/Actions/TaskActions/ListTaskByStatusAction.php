@@ -11,7 +11,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 
 /**
  * @OA\Get(
- *     path="/task/by-status/{status}",
+ *     path="/api/v1/task/by-status/{status}",
  *     summary="List all tasks",
  *     @OA\Parameter(
  *          name="status",
@@ -31,7 +31,7 @@ use Psr\Http\Message\ResponseInterface as Response;
  *     )
  * )
  * @OA\PathItem(
- *     path="/task/by-status/{status}"
+ *     path="/api/v1/task/by-status/{status}"
  * )
  */
 class ListTaskByStatusAction extends BaseAction

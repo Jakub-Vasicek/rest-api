@@ -24,8 +24,6 @@ use Ramsey\Uuid\UuidInterface;
  *     @OA\Property(property="title", type="string"),
  *     @OA\Property(property="status", type="string"),
  *     @OA\Property(property="description", type="string", nullable=true),
- *     @OA\Property(property="created_at", type="datetime"),
- *     @OA\Property(property="updated_at", type="datetime")
  * )
  */
 #[Entity, Table(name: 'tasks')]

@@ -12,7 +12,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 
 /**
  * @OA\Put(
- *     path="/task/{id}",
+ *     path="/api/v1/task/{id}",
  *     summary="Update a task",
  *     @OA\Parameter(
  *      name="id",
@@ -34,7 +34,7 @@ use Psr\Http\Message\ResponseInterface as Response;
  *      )
  * )
  * @OA\PathItem(
- *     path="/task/{id}"
+ *     path="/api/v1/task/{id}"
  * )
  */
 class UpdateTaskAction extends BaseAction

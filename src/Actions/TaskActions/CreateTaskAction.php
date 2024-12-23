@@ -14,7 +14,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 
 /**
  * @OA\Post(
- *     path="/task",
+ *     path="/api/v1/task",
  *     summary="Create a new task",
  *     @OA\RequestBody(
  *         required=true,
@@ -30,7 +30,7 @@ use Psr\Http\Message\ResponseInterface as Response;
  *    )
  * )
  * @OA\PathItem(
- *     path="/task"
+ *     path="/api/v1/task"
  * )
  */
 class CreateTaskAction extends BaseAction

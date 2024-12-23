@@ -25,12 +25,14 @@ return static function (App $app) {
         throw new \RuntimeException('Dependency injection container is missing.');
     }
 
-    $app->group('/task', function (Group $group) use ($uuid) {
-        $group->post('[/]', CreateTaskAction::class);
-        $group->group('', function (Group $group) {
-            $group->get('[/]', ListTaskAction::class);
-            $group->get("/by-status/{status}", ListTaskByStatusAction::class);
+    $app->group('/api/v1' , function (Group $group) use ($uuid) {
+        $group->group('/task', function (Group $group) use ($uuid) {
+            $group->post('[/]', CreateTaskAction::class);
+            $group->group('', function (Group $group) {
+                $group->get('[/]', ListTaskAction::class);
+                $group->get("/by-status/{status}", ListTaskByStatusAction::class);
+            });
+            $group->put("/{id:{$uuid}}", UpdateTaskAction::class);
         });
-        $group->put("/{id:{$uuid}}", UpdateTaskAction::class);
     });
 };
