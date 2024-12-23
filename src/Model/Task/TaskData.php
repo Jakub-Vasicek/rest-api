@@ -13,11 +13,11 @@ class TaskData
     public TaskStatus $status;
 
     /**
-     * @param array $data {
-     *      title: string,
-     *      description?: string,
-     *      status: string
-     * }
+     * @param array{
+     *      title?: string,
+     *      description?: ?string,
+     *      status?: string
+     * } $data
      * @throws InvalidArgumentException
      */
     public static function fromArray(array $data): self
@@ -25,9 +25,11 @@ class TaskData
         $taskData = new self();
         $taskData->title = $data['title'] ?? throw InvalidArgumentException::missingTitleException();
         $taskData->description = $data['description'] ?? null;
-        $taskData->status =
-            TaskStatus::from($data['status'])
-            ?? throw InvalidArgumentException::missingStatusException();
+
+        if (!array_key_exists('status', $data)) {
+            throw InvalidArgumentException::missingStatusException();
+        }
+        $taskData->status = TaskStatus::from($data['status']);
 
         return $taskData;
     }

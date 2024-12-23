@@ -12,7 +12,7 @@ readonly class TaskRepository
     {
     }
 
-    public function create(Task $task)
+    public function create(Task $task): void
     {
         $this->em->persist($task);
         $this->em->flush();

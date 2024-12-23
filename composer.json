@@ -23,7 +23,7 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^11",
-        "phpstan/phpstan": "^1.11",
+        "phpstan/phpstan": "^2.0",
         "roave/security-advisories": "dev-latest"
     },
     "autoload": {
@@ -32,7 +32,7 @@
         }
     },
     "scripts": {
-        "app-phpstan-max": "phpstan analyse -l max -c phpstan.neon",
+        "app-phpstan": "phpstan analyse -c phpstan.neon",
         "app-test-unit": "phpunit -c phpunit.xml",
         "app-generate-swagger": "./vendor/bin/openapi -o swagger.yaml src"
     }

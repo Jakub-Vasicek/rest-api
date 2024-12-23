@@ -71,11 +71,11 @@ class Task implements \JsonSerializable
     }
 
     /**
-     * @param array $data{
+     * @param array{
      *      title?: string,
      *      description?: string,
      *      status?: string
-     * }
+     * } $data
      */
     public function updateFromIncompleteSet(array $data): self
     {
@@ -118,16 +118,16 @@ class Task implements \JsonSerializable
 
     /**
      * @return array{
+     *     id: non-empty-string,
      *     title: string,
-     *     description: string,
+     *     description: ?string,
      *     status: string,
-     *     created_at: DateTime,
-     *     updated_at: DateTime
+     *     created_at: non-falsy-string,
+     *     updated_at: non-falsy-string
      * }
      */
     public function jsonSerialize(): array
     {
-
         return [
             'id' => $this->id->toString(),
             'title' => $this->title,

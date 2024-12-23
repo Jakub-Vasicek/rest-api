@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace JakVas\Application\Actions\TaskActions;
 
 use JakVas\Application\Actions\BaseAction;
+use JakVas\Application\Model\Task\Exception\InvalidArgumentException;
 use JakVas\Application\Model\Task\Task;
 use JakVas\Application\Model\Task\TaskData;
 use JakVas\Application\Model\Task\TaskRepository;
@@ -40,6 +41,7 @@ class CreateTaskAction extends BaseAction
     }
 
     /**
+     * @throws InvalidArgumentException
      * @throws \JsonException
      */
     protected function action(): Response
@@ -60,6 +62,7 @@ class CreateTaskAction extends BaseAction
     }
 
     /**
+     * @param array<string, ?string> $data
      * @throws \JsonException
      */
     private function validateData(array $data): ?Response

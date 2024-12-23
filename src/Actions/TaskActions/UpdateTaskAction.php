@@ -57,10 +57,9 @@ class UpdateTaskAction extends BaseAction
             return $this->response->withStatus(404);
         }
 
-        $requestData = json_decode($this->request->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
-        $taskDataNew = TaskData::updateFromIncompleteSet($task->getData(), $requestData);
+        $taskDataNew = json_decode($this->request->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
 
-        $task->updateTask($taskDataNew);
+        $task->updateFromIncompleteSet($taskDataNew);
         $this->taskRepository->updateTask($task);
 
         $response = $this->response->withStatus(200);

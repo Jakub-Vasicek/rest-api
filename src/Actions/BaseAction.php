@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace JakVas\Application\Actions;
 
+use JakVas\Application\Actions\TaskActions\Exception\MissingArgumentException;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\RequestInterface as Request;
-use Psr\Http\Message\ServerRequestInterface;
-use Slim\Exception\HttpBadRequestException;
-use Slim\Exception\HttpNotFoundException;
 
 /**
  * @OA\Info(
@@ -35,10 +33,8 @@ abstract class BaseAction
 
     /**
      * @param string[] $args
-     * @throws HttpNotFoundException
-     * @throws HttpBadRequestException
      */
-    public function __invoke(ServerRequestInterface $request, Response $response, array $args): Response
+    public function __invoke(Request $request, Response $response, array $args): Response
     {
         $this->request = $request;
         $this->response = $response;
@@ -46,10 +42,13 @@ abstract class BaseAction
         return $this->action();
     }
 
+    /**
+     * @throws MissingArgumentException
+     */
     protected function resolveArg(string $name): string
     {
         if (!isset($this->args[$name])) {
-            throw new HttpBadRequestException($this->request, "Could not resolve argument `{$name}`.");
+            throw MissingArgumentException::missingArgumentException($name);
         }
 
         return $this->args[$name];
